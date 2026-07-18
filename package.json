@@ -1,7 +1,7 @@
 {
   "name": "task17",
   "private": true,
-  "homepage":  "https://gauribonde03.github.io/User-Directory",
+  "homepage": "https://gauribonde03.github.io/User-Directory",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -16,6 +16,7 @@
     "axios": "^1.18.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "react-router-dom": "^7.18.1",
     "tailwindcss": "^4.3.2"
   },
   "devDependencies": {

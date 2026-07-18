@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function FetchUsers() {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -60,9 +62,10 @@ function FetchUsers() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {users.map((user) => (
               <div
-                key={user.id}
-                className="bg-white rounded-xl shadow-md p-5 hover:shadow-xl transition"
-              >
+  key={user.id}
+  onClick={() => navigate(`/user/${user.id}`)}
+  className="bg-white rounded-xl shadow-md p-5 hover:shadow-xl transition cursor-pointer hover:scale-105"
+>
                 <img
                   src={user.image}
                   alt={user.firstName}
