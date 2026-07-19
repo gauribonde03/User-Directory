@@ -1,19 +1,37 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { ThemeContext } from "./ThemeContext";
 
 function UserDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const { darkMode, toggleTheme } = useContext(ThemeContext);
   const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     axios
       .get(`https://dummyjson.com/users/${id}`)
-      .then((res) => setUser(res.data))
-      .catch((err) => console.log(err));
+      .then((res) => {
+        setUser(res.data);
+        setError(null);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError("Failed to load user details.");
+      });
   }, [id]);
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex justify-center items-center p-8">
+        <h2 className="text-center mt-20 text-2xl text-red-600">
+          {error}
+        </h2>
+      </div>
+    );
+  }
 
   if (!user) {
     return (
@@ -24,9 +42,16 @@ function UserDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-8">
-      <div className="bg-white shadow-xl rounded-xl p-8 max-w-md w-full">
-
+    <div
+      className={`min-h-screen flex justify-center items-center p-8 ${
+        darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
+      }`}
+    >
+      <div
+        className={`shadow-xl rounded-xl p-8 max-w-md w-full ${
+          darkMode ? "bg-gray-800" : "bg-white"
+        }`}
+      >
         <img
           src={user.image}
           alt={user.firstName}
@@ -38,7 +63,6 @@ function UserDetails() {
         </h1>
 
         <div className="mt-6 space-y-3">
-
           <p>
             <strong>User ID:</strong> {user.id}
           </p>
@@ -60,22 +84,27 @@ function UserDetails() {
           </p>
 
           <p>
-            <strong>City:</strong> {user.address.city}
+            <strong>City:</strong> {user?.address?.city || "N/A"}
           </p>
 
           <p>
-            <strong>Company:</strong> {user.company.name}
+            <strong>Company:</strong> {user?.company?.name || "N/A"}
           </p>
-
         </div>
 
         <button
+          onClick={toggleTheme}
+          className="w-full bg-black text-white py-2 rounded-lg mt-6"
+        >
+          {darkMode ? "Light Mode" : "Dark Mode"}
+        </button>
+
+        <button
           onClick={() => navigate(-1)}
-          className="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+          className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
         >
           ← Back
         </button>
-
       </div>
     </div>
   );

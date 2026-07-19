@@ -2,12 +2,14 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
-import App from "./App";
+import App from "./App";import ThemeProvider from "./ThemeContext";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter basename="/User-Directory">
-  <App />
-</BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter basename="/User-Directory">
+        <App />
+      </BrowserRouter>
+    </ThemeProvider>
   </StrictMode>
 );
